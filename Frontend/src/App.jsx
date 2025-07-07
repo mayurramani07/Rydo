@@ -5,6 +5,7 @@ import UserLogin from './pages/UserLogin'
 import UserSignup from './pages/UserSignup'
 import CaptainLogin from './pages/CaptainLogin'
 import CaptainSignup from './pages/CaptainSignup'
+import Home2 from './pages/Home2'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path='/signup' element={<UserSignup />} /> 
         <Route path='/captain-login' element={<CaptainLogin />} /> 
         <Route path='/captain-signup' element={<CaptainSignup />} /> 
+        <Route path='/Home2' element={<Home2 />} /> 
 
       </Routes>
 

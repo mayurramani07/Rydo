@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { UserDataContext } from '../context/UserContext';
 
 const UserSignup = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userData, setUserData] = useState({});
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setUserData({
-      firstName,
-      lastName,
+
+    const newUser = {
+      fullname: {
+        firstname: firstName,
+        lastname: lastName,
+      },
       email,
       password,
-    });
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
+    };
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+
+      if (response.status === 201) {
+        const data = response.data;
+        setUser(data.user);
+        navigate('/home2');
+      }
+
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert("Signup failed. Please check your network or backend.");
+    }
   };
 
   return (
@@ -28,7 +49,6 @@ const UserSignup = () => {
         <div className="mb-5 text-black text-2xl font-bold">Rydo</div>
 
         <form onSubmit={submitHandler}>
-
           <h3 className='text-lg mb-2 font-medium'>Enter Your Name</h3>
           <div className='flex gap-4 mb-7'>
             <input
@@ -73,7 +93,7 @@ const UserSignup = () => {
             type="submit"
             className='bg-[#111] text-white font-semibold rounded px-4 py-2 border w-full text-lg'
           >
-            Sign Up
+            SignUp
           </button>
         </form>
 
@@ -86,7 +106,8 @@ const UserSignup = () => {
       </div>
 
       <div>
-        <Link to='/captain-login'
+        <Link
+          to='/captain-login'
           className='bg-[#111] flex items-center justify-center mb-5 text-white font-semibold mb-7 rounded px-4 py-2 border w-full text-lg'
         >
           Sign in as Captain
