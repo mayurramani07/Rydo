@@ -22,7 +22,7 @@ const CaptainLogin = () => {
         <div className="mb-5 text-black text-2xl font-bold">Rydo Captain</div>
 
         <form onSubmit={submitHandler}>
-          <h3 className='text-lg mb-2 font-medium'>What's your email</h3>
+          <h3 className='text-lg mb-2 font-medium'>Enter your email</h3>
           <input 
             required
             value={email}
