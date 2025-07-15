@@ -30,7 +30,7 @@ const UserSignup = () => {
       if (response.status === 201) {
         const data = response.data;
         setUser(data.user);
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('token', data.token);
         navigate('/home2');
       }
 
@@ -39,8 +39,22 @@ const UserSignup = () => {
       setEmail('');
       setPassword('');
     } catch (error) {
-      console.error("Signup error:", error);
-      alert("Signup failed. Please check your network or backend.");
+      if (axios.isAxiosError(error)) {
+        const resData = error.response?.data;
+
+        if (Array.isArray(resData?.errors)) {
+          alert(resData.errors[0].msg); // Validation error (e.g., first name too short)
+        } else if (resData?.message) {
+          alert(resData.message); // Custom message (e.g., User already exists)
+        } else {
+          alert("Signup failed. Try again.");
+        }
+
+        console.error("Signup error:", resData);
+      } else {
+        console.error("Unexpected error:", error);
+        alert("Unexpected signup error.");
+      }
     }
   };
 
